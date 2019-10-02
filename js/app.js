@@ -43,6 +43,7 @@ class Tomagotchi {
         }, 100)
         if(this.hunger === 1) {
             console.log("Your pet is full.");
+            $petImg.css("width", "300px");
             myPet.status = "idle";
             clearInterval(moveHeart);
         } else {
@@ -129,10 +130,10 @@ function startLife() {
             console.log("Zzz...");
         } else {
             if(myPet.hunger >= 10 || myPet.boredom >= 10 || myPet.sleepiness >= 10) {
+                $petImg.attr("src", "Images/cat-passed.png");
                 console.log("Your pet died...");
-                myPet.status = "dead";
-                $("#interface button").off();
-                clearInterval(realTimer);
+                // $("#interface button").off();
+                // clearInterval(realTimer);
             }
             if(count % 5 === 0 && count !== 0) {
                 myPet.hunger++;
@@ -147,7 +148,7 @@ function startLife() {
         }
         count++;
         console.log(count);
-    },1000);
+    },100);
 }
 
 $petImg.on("click", () => {
@@ -158,7 +159,7 @@ $petImg.on("click", () => {
     if(hatchCount === 10) {
         $petImg.attr("src", "Images/egg-cracked2.png")
     }
-    if(hatchCount === 15) {
+    if(hatchCount === 1) {
         myPet.hatch();
         startLife();
         $petImg.off();
