@@ -24,30 +24,38 @@ class Tomagotchi {
         })
     }
     feed() {
+        let petWidth = $petImg.css("width").split("p")[0]
+        let petHeight = $petImg.css("height").split("p")[0]
+        console.log(petWidth)
+        if(this.status === "sleeping" || this.status === "busy") {
+            return;
+        }
         let count = 0;
-        $("#emote").attr("src", "Images/heart.png");
         this.status = "busy";
-        const moveHeart = setInterval(() => {
+        const eat = setInterval(() => {
             if(count % 2 === 0) {
-                $emote.animate({left: "5px"},10)
+                $petImg.attr("src", "Images/cat-eating1.png")
             } else {
-                $emote.animate({left: "5px"},10)
+                $petImg.attr("src", "Images/cat-eating2.png")
             }
             count++;
             if(count === 10) {
                 $petImg.attr("src", "Images/cat-idle1.png")
                 $emote.css("visibility", "hidden");
                 myPet.status = "idle";
-                clearInterval(moveHeart);
+                clearInterval(eat);
             }
         }, 100)
         if(this.hunger === 1) {
             console.log("Your pet is full.");
-            $petImg.css("width", "300px");
+            $petImg.attr("src", "Images/cat-full.png")
+            $petImg.css("width", `${(parseInt(petWidth)+1)}px`)
             myPet.status = "idle";
-            clearInterval(moveHeart);
+            clearInterval(eat);
         } else {
             $petImg.attr("src", "Images/cat-eating.png")
+            $petImg.css("width", `${(parseInt(petWidth)+10)}px`)
+            $petImg.css("height", `${(parseInt(petHeight)+10)}px`)
             $emote.css("visibility", "visible");
             this.feedCount++;
             if(this.feedCount === 3) {
@@ -59,6 +67,9 @@ class Tomagotchi {
         }
     }
     play() {
+        if(this.status === "sleeping" || this.status === "busy") {
+            return;
+        }
         let count = 0;
         this.status = "busy";
         const shakePet = setInterval(() => {
@@ -79,7 +90,7 @@ class Tomagotchi {
             myPet.status = "idle";
             clearInterval(shakePet);
         } else {
-            $petImg.attr("src", "Images/catjumping.png");
+            $petImg.attr("src", "Images/catjumping1.png");
             this.playCount++;
             if(this.playCount === 3) {
                 this.hunger++;
@@ -91,14 +102,17 @@ class Tomagotchi {
         }
     }
     sleep() {
+        if(this.status === "busy") {
+            return;
+        }
         $petImg.attr("src", "Images/cat-sleeping.png");
-        $home.css("background-color", "rgb(47, 47, 47)");
+        $home.css('background-image', 'url("Images/night.png")');
         this.status = "sleeping";
         const sleepTimer = setInterval(() => {
             if(this.sleepiness === 1) {
                 console.log("Your pet is fully rested.");
                 this.status = "idle";
-                $home.css("background-color", "rgb(216, 216, 216)");
+                $home.css('background-image', 'url("Images/day.png")');
                 $petImg.attr("src", "Images/cat-idle1.png");
                 clearInterval(sleepTimer);
             } else {
@@ -108,9 +122,9 @@ class Tomagotchi {
         }, 2000);
     }
     render() {
-        $("#hunger").text(`Hunger: ${myPet.hunger}`);
-        $("#boredom").text(`Boredom: ${myPet.boredom}`);
-        $("#sleepiness").text(`Sleepiness: ${myPet.sleepiness}`);
+        $("#hunger").text(`HUNGER: ${myPet.hunger}`);
+        $("#boredom").text(`BOREDOM: ${myPet.boredom}`);
+        $("#sleepiness").text(`SLEEPINESS: ${myPet.sleepiness}`);
     }
 }
 let myPet = new Tomagotchi("lukas", 1, 1, 1, 1);
@@ -130,28 +144,37 @@ function startLife() {
             console.log("Zzz...");
         } else {
             if(myPet.hunger >= 10 || myPet.boredom >= 10 || myPet.sleepiness >= 10) {
-                $petImg.attr("src", "Images/cat-passed.png");
+                setTimeout(() => {
+                    $emote.css("top", `${($petImg.position().top-10)}px`)
+                    $emote.attr("src", "Images/cat-passed1.png");
+                    $emote.css("visibility", "visible");
+                }, 500)
                 console.log("Your pet died...");
-                // $("#interface button").off();
-                // clearInterval(realTimer);
-            }
-            if(count % 5 === 0 && count !== 0) {
-                myPet.hunger++;
-                myPet.boredom++;
-                myPet.render();
-            }
-            if(count % 5 === 0 && myPet.status !== "busy") {
-                $petImg.attr("src", "Images/cat-idle2.png");
-            } else if(count % 5 !== 0 && myPet.status !== "busy"){
-                $petImg.attr("src", "Images/cat-idle1.png");
+                $("#interface button").off();
+                clearInterval(realTimer);
+            } else {
+                if(count % 4 === 0 && count !== 0) {
+                    myPet.hunger++;
+                    myPet.boredom++;
+                }
+                if(count % 10 === 0 && count!== 0) {
+                    myPet.sleepiness++;
+                }
+                if(count % 4 === 0 && myPet.status !== "busy") {
+                    $petImg.attr("src", "Images/cat-idle2.png");
+                } else if(count % 5 !== 0 && myPet.status !== "busy"){
+                    $petImg.attr("src", "Images/cat-idle1.png");
+                }
             }
         }
+        myPet.render();
         count++;
         console.log(count);
     },100);
 }
 
 $petImg.on("click", () => {
+    console.log("tap");
     hatchCount++;
     if(hatchCount === 5) {
         $petImg.attr("src", "Images/egg-cracked1.png")
@@ -159,7 +182,7 @@ $petImg.on("click", () => {
     if(hatchCount === 10) {
         $petImg.attr("src", "Images/egg-cracked2.png")
     }
-    if(hatchCount === 1) {
+    if(hatchCount === 15) {
         myPet.hatch();
         startLife();
         $petImg.off();

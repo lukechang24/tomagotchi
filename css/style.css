@@ -3,27 +3,29 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Squada One', cursive;
 }
 
 #container {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
     width: 45rem;
     height: 45rem;
     border: 0.1rem solid black;
     border-radius: 15rem;
-    background-color: rgb(48, 225, 248);
+    background-color: rgb(255, 94, 0);
 }
 
 #screen {
+    margin-top: 8%;
     width: 60%;
     height: 60%;
     border: 0.1rem solid black;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: rgb(216, 216, 216);
 }
 
 #HUD {
@@ -31,22 +33,24 @@ body {
     height: 10%;
     display: flex;
     justify-content: space-around;
+    align-items: center;
     border-bottom: 0.1rem solid black;
+    background-color: white;
 }
 
 #HUD div {
     width: 30%;
-    height: 100%;
+    height: 60%;
     text-align: center;
-    font-size: 1.4rem;
+    font-size: 150%;
+    font-weight: bold;
 }
 
 #interface {
-    width: 100%;
+    width: 60%;
     height: 10%;
     display: flex;
     justify-content: space-around;
-    border-top: 0.1rem solid black;
     align-items: center;
 }
 
@@ -57,8 +61,11 @@ body {
 }
 
 #home {
-    border: 0.1rem solid black;
-    height: 80%;
+    background-image: url("../Images/day.png");
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center center; 
+    height: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -66,14 +73,13 @@ body {
 }
 
 #pet {
-    width: 250px;
-    height: 250px;
+    width: 30%;
+    height: 30%;
     position: relative;
 }
 
 #emote {
-    width: 50px;
-    height: 50px;
-    position: relative;
-    right: 10px;
+    width: 5%;
+    position: absolute;
+    z-index: 1;
 }
