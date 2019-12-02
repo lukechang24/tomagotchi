@@ -4,6 +4,7 @@ body {
     justify-content: center;
     align-items: center;
     font-family: 'Squada One', cursive;
+    background-color: lightcyan;
 }
 
 #container {
@@ -16,6 +17,12 @@ body {
     border: 0.1rem solid black;
     border-radius: 15rem;
     background-color: rgb(255, 94, 0);
+    margin-top: 2rem;
+}
+
+#tap {
+    position: absolute;
+    top: 5rem;
 }
 
 #screen {
@@ -82,4 +89,9 @@ body {
     width: 5%;
     position: absolute;
     z-index: 1;
+}
+button {
+    background-color: yellow;
+    font-family: 'Squada One', cursive;
+    font-size: 150%;
 }

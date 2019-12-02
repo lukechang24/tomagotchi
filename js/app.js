@@ -141,6 +141,10 @@ myPet.render();
 function startLife() {
     const realTimer = setInterval(() => {
         if(myPet.status === "sleeping") {
+            if(count % 4 === 0) {
+                myPet.hunger++;
+                myPet.render();
+            }
             console.log("Zzz...");
         } else {
             if(myPet.hunger >= 10 || myPet.boredom >= 10 || myPet.sleepiness >= 10) {
@@ -170,7 +174,7 @@ function startLife() {
         myPet.render();
         count++;
         console.log(count);
-    },100);
+    },1000);
 }
 
 $petImg.on("click", () => {
@@ -184,6 +188,7 @@ $petImg.on("click", () => {
     }
     if(hatchCount === 15) {
         myPet.hatch();
+        document.getElementById("tap").style.display = "none";
         startLife();
         $petImg.off();
     }
